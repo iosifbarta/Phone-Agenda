@@ -1,10 +1,15 @@
 package org.fasttrackit;
 
 
-public class App 
+import org.fasttrackit.transfer.CreateNewPerson;
+
+public class App
 {
     public static void main( String[] args )
     {
-        System.out.println( "Hello World!" );
+        CreateNewPerson request = new CreateNewPerson();
+        request.setFirstName("Billy");
+        request.setSecondName("Joe");
+        request.setPhoneNumber(724245198);
     }
 }
