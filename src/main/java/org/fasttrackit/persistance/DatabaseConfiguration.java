@@ -9,18 +9,28 @@ import java.util.Properties;
 
 public class DatabaseConfiguration {
 
-    public static Connection getConnection() throws SQLException, IOException {
+    public static Connection getConnection() throws SQLException, IOException, ClassNotFoundException {
 
         InputStream inputStream = DatabaseConfiguration.class.getClassLoader().getResourceAsStream("db.properties");
 
-        if(inputStream==null){
+        if (inputStream == null) {
             throw new RuntimeException("Failed to read db config file");
         }
 
-        Properties properties = new Properties();
-        properties.load(inputStream);
+        try {
+            Properties properties = new Properties();
+            properties.load(inputStream);
+
+            Class.forName("com.mysql.cj.jdbc.Driver");
 
         return DriverManager.getConnection(
-                properties.getProperty("url"), properties.getProperty("user"), properties.getProperty("password"));
-    }
+                properties.getProperty("url"),
+                properties.getProperty("user"),
+                properties.getProperty("password"));
+
+    }finally {
+            inputStream.close();
+        }
+        }
+
 }
