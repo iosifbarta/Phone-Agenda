@@ -4,6 +4,15 @@ public class UpdateAgenda {
     String firstName;
     String secondName;
     int phoneNumber;
+    String email;
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
     public String getFirstName() {
         return firstName;
@@ -35,6 +44,7 @@ public class UpdateAgenda {
                 "firstName='" + firstName + '\'' +
                 ", secondName='" + secondName + '\'' +
                 ", phoneNumber=" + phoneNumber +
+                ", email='" + email + '\'' +
                 '}';
     }
 }

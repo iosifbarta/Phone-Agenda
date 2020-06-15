@@ -6,6 +6,15 @@ public class PhoneAgenda {
     String firstName;
     String secondName;
     int phoneNumber;
+    String email;
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
     public long getId() {
         return id;
@@ -46,6 +55,7 @@ public class PhoneAgenda {
                 ", firstName='" + firstName + '\'' +
                 ", secondName='" + secondName + '\'' +
                 ", phoneNumber=" + phoneNumber +
+                ", email='" + email + '\'' +
                 '}';
     }
 }

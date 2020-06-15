@@ -1,7 +1,7 @@
 package org.fasttrackit.persistance;
 
 import org.fasttrackit.domain.PhoneAgenda;
-import org.fasttrackit.transfer.CreateNewPerson;
+import org.fasttrackit.transfer.CreateContact;
 import org.fasttrackit.transfer.UpdateAgenda;
 
 import java.io.IOException;
@@ -11,9 +11,9 @@ import java.util.List;
 
 public class PhoneAgendaRepository {
 
-    public void addPerson (CreateNewPerson request) throws IOException, SQLException, ClassNotFoundException {
+    public void createContact(CreateContact request) throws IOException, SQLException, ClassNotFoundException {
 
-        String sql = "INSERT INTO phone_agenda (first_name, second_name, phone_number) VALUES(?, ?, ?)";
+        String sql = "INSERT INTO phone_agenda (first_name, second_name, phone_number, email) VALUES(?, ?, ?, ?)";
         try (
             Connection connection = DatabaseConfiguration.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(sql)){
@@ -21,13 +21,14 @@ public class PhoneAgendaRepository {
         preparedStatement.setString(1,request.getFirstName());
         preparedStatement.setString(2,request.getSecondName());
         preparedStatement.setInt(3,request.getPhoneNumber());
+        preparedStatement.setString(4,request.getEmail());
 
         preparedStatement.executeUpdate();
         }
     }
     public void updateAgenda (long id, UpdateAgenda request) throws SQLException, IOException, ClassNotFoundException {
 
-        String sql = "UPDATE phone_agenda SET first_name=?, second_name=?, phone_number=? WHERE id=?";
+        String sql = "UPDATE phone_agenda SET first_name=?, second_name=?, phone_number=?, email=? WHERE id=?";
 
         try (
                 Connection connection = DatabaseConfiguration.getConnection();
@@ -36,7 +37,8 @@ public class PhoneAgendaRepository {
             preparedStatement.setString(1, request.getFirstName());
             preparedStatement.setString(2,request.getSecondName());
             preparedStatement.setInt(3,request.getPhoneNumber());
-            preparedStatement.setLong(4,id);
+            preparedStatement.setString(4,request.getEmail());
+            preparedStatement.setLong(5,id);
 
             preparedStatement.executeUpdate();
         }
@@ -52,7 +54,7 @@ public class PhoneAgendaRepository {
         }
     }
     public List<PhoneAgenda> getContacts() throws SQLException, IOException, ClassNotFoundException {
-        String sql = "SELECT id, first_name, second_name, phone_number FROM phone_agenda";
+        String sql = "SELECT id, first_name, second_name, phone_number, email FROM phone_agenda";
 
         List<PhoneAgenda> contacts = new ArrayList<>();
 
@@ -69,9 +71,9 @@ public class PhoneAgendaRepository {
                 contact.setFirstName(resultSet.getString("first_name"));
                 contact.setSecondName(resultSet.getString("second_name"));
                 contact.setPhoneNumber(resultSet.getInt("phone_number"));
+                contact.setEmail(resultSet.getString("email"));
 
                 contacts.add(contact);
-
             }
         }return contacts;
     }
