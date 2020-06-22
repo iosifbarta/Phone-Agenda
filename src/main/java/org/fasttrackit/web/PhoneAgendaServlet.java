@@ -23,6 +23,7 @@ public class PhoneAgendaServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        addCorsHeaders(resp);
         CreateContact createContact = ObjectMapperConfiguration.OBJECT_MAPPER.readValue(req.getReader(), CreateContact.class);
 
         try {
@@ -34,6 +35,7 @@ public class PhoneAgendaServlet extends HttpServlet {
 
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        addCorsHeaders(resp);
 
         String id = req.getParameter("id");
         UpdateAgenda updateAgenda = ObjectMapperConfiguration.OBJECT_MAPPER.readValue(req.getReader(), UpdateAgenda.class);
@@ -46,6 +48,7 @@ public class PhoneAgendaServlet extends HttpServlet {
 
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        addCorsHeaders(resp);
         String id = req.getParameter("id");
         try {
             phoneAgendaService.deleteContact(Long.parseLong(id));
@@ -56,6 +59,7 @@ public class PhoneAgendaServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        addCorsHeaders(resp);
         try {
             List<PhoneAgenda> contacts = phoneAgendaService.getContacts();
 
@@ -64,6 +68,18 @@ public class PhoneAgendaServlet extends HttpServlet {
         } catch (SQLException | ClassNotFoundException throwables) {
             resp.sendError(500, "There was an error while processing your request. "+ throwables.getMessage());
         }
+
+    }
+
+    @Override
+    protected void doOptions(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        addCorsHeaders(resp);
+    }
+
+    private void  addCorsHeaders(HttpServletResponse resp){
+        resp.addHeader("Access-Control-Allow-Origin", "*");
+        resp.addHeader("Access-Control-Allow-Methods", "POST, GET, PUT, DELETE, OPTIONS");
+        resp.addHeader("Access-Control-Allow-Headers", "content-type");
 
     }
 }
